@@ -358,32 +358,42 @@ class AppointmentListScreen extends GetView<AppointmentController> {
                     Row(
                       children: [
                         Expanded(
+                          flex: 3,
                           child: Text(
                             appointment.doctorName,
                             style: AppTextStyles.doctorName.copyWith(
                               color: AppColors.textPrimary,
                               fontSize: 16,
                             ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          decoration: BoxDecoration(
-                            color: statusColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: statusColor.withOpacity(0.3),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          flex: 1,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 3,
                             ),
-                          ),
-                          child: Text(
-                            appointment.status.toUpperCase(),
-                            style: AppTextStyles.caption.copyWith(
-                              color: statusColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 10,
+                            decoration: BoxDecoration(
+                              color: statusColor.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: statusColor.withOpacity(0.3),
+                              ),
+                            ),
+                            child: Text(
+                              appointment.status.toUpperCase(),
+                              style: AppTextStyles.caption.copyWith(
+                                color: statusColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 8,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
@@ -396,6 +406,8 @@ class AppointmentListScreen extends GetView<AppointmentController> {
                         color: AppColors.primaryBlue,
                         fontWeight: FontWeight.w500,
                       ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
                     const SizedBox(height: 4),
                     Text(
@@ -403,6 +415,8 @@ class AppointmentListScreen extends GetView<AppointmentController> {
                       style: AppTextStyles.bodySmall.copyWith(
                         color: AppColors.textSecondary,
                       ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
                   ],
                 ),
@@ -413,92 +427,116 @@ class AppointmentListScreen extends GetView<AppointmentController> {
           const SizedBox(height: 16),
 
           // Date, Time & Actions
-          Row(
+          Column(
             children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.calendar_today,
-                          size: 16,
-                          color: AppColors.textSecondary,
-                        ),
-                        const SizedBox(width: 6),
-                        Text(
-                          _formatDate(appointment.dateTime),
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
+              // Date and Time Row
+              Row(
+                children: [
+                  Icon(
+                    Icons.calendar_today,
+                    size: 16,
+                    color: AppColors.textSecondary,
+                  ),
+                  const SizedBox(width: 6),
+                  Flexible(
+                    child: Text(
+                      _formatDate(appointment.dateTime),
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.access_time,
-                          size: 16,
-                          color: AppColors.textSecondary,
-                        ),
-                        const SizedBox(width: 6),
-                        Text(
-                          _formatTime(appointment.dateTime),
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
+                  ),
+                  const SizedBox(width: 16),
+                  Icon(
+                    Icons.access_time,
+                    size: 16,
+                    color: AppColors.textSecondary,
+                  ),
+                  const SizedBox(width: 6),
+                  Flexible(
+                    child: Text(
+                      _formatTime(appointment.dateTime),
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              if (isUpcoming) ...[
-                PremiumGradientButton(
-                  text: 'Reschedule',
-                  onPressed: () => _rescheduleAppointment(appointment),
-                  width: 100,
-                  height: 36,
-                  gradientColors: AppColors.healingGradient,
-                  borderRadius: 18,
-                  textStyle: AppTextStyles.caption.copyWith(
-                    color: AppColors.textWhite,
-                    fontWeight: FontWeight.w600,
+
+              // Action Buttons Row
+              if (isUpcoming || appointment.status == 'completed') ...[
+                const SizedBox(height: 12),
+                if (isUpcoming) ...[
+                  Row(
+                    children: [
+                      Expanded(
+                        child: PremiumGradientButton(
+                          text: 'Reschedule',
+                          onPressed: () => _rescheduleAppointment(appointment),
+                          width: double.infinity,
+                          height: 36,
+                          gradientColors: AppColors.healingGradient,
+                          borderRadius: 18,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 8),
+                          textStyle: AppTextStyles.caption.copyWith(
+                            color: AppColors.textWhite,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: PremiumGradientButton(
+                          text: 'Cancel',
+                          onPressed: () => _cancelAppointment(appointment),
+                          width: double.infinity,
+                          height: 36,
+                          gradientColors: [
+                            AppColors.error,
+                            AppColors.error.withOpacity(0.7)
+                          ],
+                          borderRadius: 18,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 8),
+                          textStyle: AppTextStyles.caption.copyWith(
+                            color: AppColors.textWhite,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(width: 8),
-                PremiumGradientButton(
-                  text: 'Cancel',
-                  onPressed: () => _cancelAppointment(appointment),
-                  width: 80,
-                  height: 36,
-                  gradientColors: [
-                    AppColors.error,
-                    AppColors.error.withOpacity(0.7)
-                  ],
-                  borderRadius: 18,
-                  textStyle: AppTextStyles.caption.copyWith(
-                    color: AppColors.textWhite,
-                    fontWeight: FontWeight.w600,
+                ] else if (appointment.status == 'completed') ...[
+                  Row(
+                    children: [
+                      Expanded(
+                        child: PremiumGradientButton(
+                          text: 'View Report',
+                          onPressed: () {},
+                          width: double.infinity,
+                          height: 36,
+                          gradientColors: AppColors.medicalGradient,
+                          borderRadius: 18,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 8),
+                          textStyle: AppTextStyles.caption.copyWith(
+                            color: AppColors.textWhite,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ] else if (appointment.status == 'completed') ...[
-                PremiumGradientButton(
-                  text: 'View Report',
-                  onPressed: () {},
-                  width: 120,
-                  height: 36,
-                  gradientColors: AppColors.medicalGradient,
-                  borderRadius: 18,
-                  textStyle: AppTextStyles.caption.copyWith(
-                    color: AppColors.textWhite,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+                ],
               ],
             ],
           ),

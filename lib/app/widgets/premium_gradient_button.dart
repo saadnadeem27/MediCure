@@ -178,6 +178,7 @@ class _PremiumGradientButtonState extends State<PremiumGradientButton>
                       ],
                       Text(
                         widget.text,
+                      
                         style: widget.textStyle ??
                             AppTextStyles.bodyMedium.copyWith(
                               color: AppColors.textWhite,
