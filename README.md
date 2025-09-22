@@ -276,9 +276,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Contact & Support
 
 **Developer**: Saad Nadeem  
-**Email**: saadnadeem27@gmail.com  
+<!-- **Email**: saadnadeem27@gmail.com   -->
 **GitHub**: [@saadnadeem27](https://github.com/saadnadeem27)  
-**LinkedIn**: [Connect with me](https://linkedin.com/in/saadnadeem27)  
+**LinkedIn**: [Connect with me](https://www.linkedin.com/in/saad-nadeem-07-an-expert-flutter-developer/)  
 
 ### Support
 - 📧 **Email Support**: saadnadeem27@gmail.com
